@@ -6,6 +6,7 @@ import java.util.Map;
 import javax.swing.*;
 import controlador.Dao;
 import controlador.DaoImplementacionMySql;
+import excepciones.CodigoException;
 import modelo.Categoria;
 import modelo.Producto;
 import principal.Principal;
@@ -92,12 +93,37 @@ public class VentanaModificar extends JDialog implements ActionListener {
 	}
 
 	private void modificar() {
-		int cod = Integer.parseInt(textCod.getText());
+		String codStr = textCod.getText().trim();
+		String precioStr = textPrecio.getText().trim();
+
+		// 1. Validar campos vacíos
+		if (codStr.isEmpty() || precioStr.isEmpty()) {
+			JOptionPane.showMessageDialog(this, "Debes rellenar todos los campos", "Error", JOptionPane.ERROR_MESSAGE);
+			return;
+		}
+
+		// 2. Validar que el código sea numérico
+		if (!codStr.matches("\\d+")) {
+			JOptionPane.showMessageDialog(this, "El código debe ser numérico", "Error", JOptionPane.ERROR_MESSAGE);
+			return;
+		}
+
+		// 3. Validar que el precio sea decimal válido
+		if (!precioStr.matches("\\d+(\\.\\d+)?")) {
+			JOptionPane.showMessageDialog(this, "El precio debe ser un número válido", "Error",
+					JOptionPane.ERROR_MESSAGE);
+			return;
+		}
+
+		int cod = Integer.parseInt(codStr);
+
+		// 4. Comprobar existencia
 		if (!Principal.existeProducto(cod)) {
 			JOptionPane.showMessageDialog(this, "No existe un producto con ese código.", "Error",
 					JOptionPane.ERROR_MESSAGE);
 			return;
 		}
+
 		Producto p = new Producto();
 		p.setCodP(cod);
 		p.setDescripcion(textDescripcion.getText());

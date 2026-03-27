@@ -57,7 +57,7 @@ public class VentanaTrabajador extends JDialog implements ActionListener {
         getContentPane().add(lblDescripcion);
 
         JLabel lblCategoria = new JLabel("Categoría:");
-        lblCategoria.setBackground(new Color(0, 0, 0));
+        lblCategoria.setBackground(new Color(0, 0, 0));	
         lblCategoria.setFont(new Font("Tahoma", Font.PLAIN, 15));
         lblCategoria.setForeground(new Color(0, 0, 0));
         lblCategoria.setBounds(26, 164, 70, 13);
@@ -173,8 +173,6 @@ public class VentanaTrabajador extends JDialog implements ActionListener {
             else
                 JOptionPane.showMessageDialog(this, "Error al añadir el producto.", "Error",
                         JOptionPane.ERROR_MESSAGE);
-
-            dispose();
 
         } catch (CodigoException ex) {
             ex.visualizarMensaje();

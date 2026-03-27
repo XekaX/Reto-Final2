@@ -1,4 +1,4 @@
-		package vista;
+package vista;
 
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -18,6 +18,8 @@ import javax.swing.JPasswordField;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JButton;
+import java.awt.Font;
+import java.awt.Color;
 
 public class Login extends JFrame implements ActionListener {
 
@@ -32,39 +34,43 @@ public class Login extends JFrame implements ActionListener {
 	 */
 	public Login() {
 		setTitle("Login");
-		setSize(300, 200);
+		setSize(445, 267);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLocationRelativeTo(null);
 
 		setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/resources/berserk.jpeg")));
 
-		setContentPane(new FondoPanel("/resources/loki.jpeg"));
-		setLayout(null);
+		setContentPane(new FondoPanel("/resources/guts.png"));
+		getContentPane().setLayout(null);
 
 		UsuarioTextField = new JTextField();
-		UsuarioTextField.setBounds(130, 30, 156, 18);
-		add(UsuarioTextField);
+		UsuarioTextField.setBounds(153, 30, 156, 18);
+		getContentPane().add(UsuarioTextField);
 
 		ContraseñaField = new JPasswordField();
-		ContraseñaField.setBounds(130, 58, 156, 18);
-		add(ContraseñaField);
+		ContraseñaField.setBounds(153, 60, 156, 18);
+		getContentPane().add(ContraseñaField);
 
 		JLabel lblNewLabel = new JLabel("Usuario:");
-		lblNewLabel.setBounds(28, 33, 92, 12);
-		add(lblNewLabel);
+		lblNewLabel.setForeground(new Color(255, 255, 255));
+		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		lblNewLabel.setBounds(52, 31, 92, 12);
+		getContentPane().add(lblNewLabel);
 
 		JLabel lblNewLabel_1 = new JLabel("Contraseña:");
-		lblNewLabel_1.setBounds(28, 61, 92, 12);
-		add(lblNewLabel_1);
+		lblNewLabel_1.setForeground(new Color(255, 255, 255));
+		lblNewLabel_1.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		lblNewLabel_1.setBounds(52, 61, 92, 12);
+		getContentPane().add(lblNewLabel_1);
 
 		btnIniciarSesion = new JButton("Iniciar sesion");
-		btnIniciarSesion.setBounds(136, 84, 150, 25);
-		add(btnIniciarSesion);
+		btnIniciarSesion.setBounds(153, 84, 150, 25);
+		getContentPane().add(btnIniciarSesion);
 		btnIniciarSesion.addActionListener(this);
 
 		btnRegistrarse = new JButton("Registrarse");
-		btnRegistrarse.setBounds(136, 119, 150, 25);
-		add(btnRegistrarse);
+		btnRegistrarse.setBounds(153, 117, 150, 25);
+		getContentPane().add(btnRegistrarse);
 		btnRegistrarse.addActionListener(this);
 
 		getRootPane().setDefaultButton(btnIniciarSesion);
@@ -97,7 +103,6 @@ public class Login extends JFrame implements ActionListener {
 
 					VentanaTrabajador menuT = new VentanaTrabajador();
 					menuT.setVisible(true);
-
 				}
 				this.dispose();
 
