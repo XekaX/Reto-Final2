@@ -1,27 +1,34 @@
 package vista;
 
 import java.awt.BorderLayout;
-import java.awt.FlowLayout;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
 import modelo.Producto;
 import principal.Principal;
+import util.ExportadorProductosXML;
 
-public class VentanaVisualizar extends JDialog {
+import javax.swing.JButton;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+public class VentanaVisualizar extends JDialog implements ActionListener {
 
     private static final long serialVersionUID = 1L;
     private final JPanel contentPanel = new JPanel();
     private JTable tablaProductos;
     private JScrollPane jscroll;
+    private JButton btnXML;
 
     public static void main(String[] args) {
         try {
@@ -34,53 +41,65 @@ public class VentanaVisualizar extends JDialog {
     }
 
     public VentanaVisualizar() {
-        setBounds(100, 100, 553, 300);
+        setBounds(100, 100, 551, 339);
         getContentPane().setLayout(new BorderLayout());
-        contentPanel.setLayout(new FlowLayout());
-        contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
         getContentPane().add(contentPanel, BorderLayout.CENTER);
-        
         presentarTablaProductos();
     }
-    
+
     private JTable cargarTablaProductos() {
         String[] columnasNombre = { "Cod_P", "Precio", "Descripcion", "Tipo" };
         Map<Integer, Producto> productosMap = Principal.listarProductos();
 
-        // Crear el modelo de la tabla
         DefaultTableModel model = new DefaultTableModel(null, columnasNombre);
 
-        // Llenar el modelo con los datos de los productos
         for (Entry<Integer, Producto> entry : productosMap.entrySet()) {
             Producto produc = entry.getValue();
-            if (produc != null) { // Verificar que el producto no sea nulo
+            if (produc != null) {
                 String[] fila = new String[4];
-                fila[0] = String.valueOf(produc.getCodP()); // cod
-                fila[1] = String.valueOf(produc.getPrecio()); // precio
-                fila[2] = produc.getDescripcion(); // descripcion
-                fila[3] = produc.getTipo().name(); // tipo
+                fila[0] = String.valueOf(produc.getCodP());
+                fila[1] = String.valueOf(produc.getPrecio());
+                fila[2] = produc.getDescripcion();
+                fila[3] = produc.getTipo().name();
                 model.addRow(fila);
-            } else {
-                System.out.println("Producto nulo encontrado en la entrada: " + entry.getKey());
             }
         }
-        
-        // Crear la tabla con el modelo
+
         return new JTable(model);
     }
-    
+
     private void presentarTablaProductos() {
-        contentPanel.setLayout(new BorderLayout());
-        jscroll = new JScrollPane();
-        jscroll.setBounds(0, 0, 585, 213);
+        contentPanel.setLayout(null);
 
         tablaProductos = this.cargarTablaProductos();
-        jscroll.setViewportView(tablaProductos);
-        contentPanel.add(jscroll, BorderLayout.CENTER); // Agregar JScrollPane al panel
+        jscroll = new JScrollPane(tablaProductos);
+        jscroll.setBounds(0, 0, 539, 215);
 
-        // Si quieres mostrar la columna "Tipo", quita estas líneas
-        // tablaProductos.getColumnModel().getColumn(3).setMinWidth(0);
-        // tablaProductos.getColumnModel().getColumn(3).setMaxWidth(0);
-        // tablaProductos.getColumnModel().getColumn(3).setWidth(0);
+        contentPanel.add(jscroll);
+        
+        btnXML = new JButton("Crear XML");
+        btnXML.setFont(new Font("Tahoma", Font.PLAIN, 15));
+        btnXML.setBounds(201, 231, 105, 39);
+        btnXML.addActionListener(this);
+        contentPanel.add(btnXML);
     }
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		 if (e.getSource().equals(btnXML)) {
+
+		        String ruta = "src/xml/catalogo.xml";
+
+		        // Crear la carpeta si no existe
+		        new java.io.File("src/xml").mkdirs();
+
+		        // Generar XML
+		        List<Producto> listaProductos = new ArrayList<>(Principal.listarProductos().values());
+		        ExportadorProductosXML exportador = new ExportadorProductosXML();
+		        exportador.exportarProductos(listaProductos, ruta);
+
+		        JOptionPane.showMessageDialog(this, "XML guardado en: " + ruta, "Éxito", JOptionPane.INFORMATION_MESSAGE);
+		    }
+		
+	}
 }

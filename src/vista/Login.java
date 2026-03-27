@@ -1,4 +1,4 @@
-package vista;
+		package vista;
 
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;

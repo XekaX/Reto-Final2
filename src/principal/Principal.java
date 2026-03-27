@@ -1,5 +1,6 @@
 package principal;
 
+import excepciones.CodigoException;
 import excepciones.LoginException;
 import modelo.Categoria;
 import modelo.Producto;
@@ -26,7 +27,7 @@ public class Principal {
 		return dao.login(trabajador);
 	}
 	
-	public static boolean altaProducto(Producto product){
+	public static boolean altaProducto(Producto product) throws CodigoException{
 		return dao.añadirProducto(product);
 	}
 	

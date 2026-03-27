@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
+import excepciones.CodigoException;
 import excepciones.LoginException;
 import modelo.Categoria;
 import modelo.Cliente;
@@ -111,7 +112,7 @@ public class DaoImplementacionMySql implements Dao {
     }
 
     @Override
-    public boolean añadirProducto(Producto produ) {
+    public boolean añadirProducto(Producto produ) throws CodigoException {
         openConnection();
         boolean insertado = false;
 

@@ -4,6 +4,7 @@ package controlador;
 
 import java.util.Map;
 
+import excepciones.CodigoException;
 import excepciones.LoginException;
 import modelo.Categoria;
 import modelo.Producto;
@@ -13,7 +14,7 @@ public interface Dao {
 
 	public Usuario login(Usuario usuario) throws LoginException;
 	
-	public boolean añadirProducto (Producto produ);
+	public boolean añadirProducto (Producto produ) throws CodigoException;
 
 	public Map<Integer, Categoria> listarCategoria();
 
