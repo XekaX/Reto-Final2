@@ -8,6 +8,7 @@ import excepciones.CodigoException;
 import excepciones.LoginException;
 import modelo.Categoria;
 import modelo.Producto;
+import modelo.ResultadoMedia;
 import modelo.Usuario;
 
 public interface Dao {
@@ -25,6 +26,8 @@ public interface Dao {
 	public boolean modificarProducto(Producto produc);
 	
 	public Map<Integer, Producto> listarProductos();
+
+	public ResultadoMedia mediaYMasCaro();
 
 
 }

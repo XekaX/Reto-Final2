@@ -4,6 +4,7 @@ import excepciones.CodigoException;
 import excepciones.LoginException;
 import modelo.Categoria;
 import modelo.Producto;
+import modelo.ResultadoMedia;
 import modelo.Trabajador;
 import modelo.Usuario;
 import vista.Login;
@@ -50,4 +51,8 @@ public class Principal {
     public static Map<Integer, Producto> listarProductos() {
 		return dao.listarProductos();
 	}
+    
+    public static ResultadoMedia mediaYMasCaro() {
+        return dao.mediaYMasCaro();
+    }
 }

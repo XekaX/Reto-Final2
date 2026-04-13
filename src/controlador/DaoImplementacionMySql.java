@@ -13,6 +13,7 @@ import excepciones.LoginException;
 import modelo.Categoria;
 import modelo.Cliente;
 import modelo.Producto;
+import modelo.ResultadoMedia;
 import modelo.Trabajador;
 import modelo.Usuario;
 import modelo.Tipo;
@@ -35,6 +36,7 @@ public class DaoImplementacionMySql implements Dao {
     final String EXISTE_PRODUCTO = "SELECT 1 FROM Producto WHERE Cod_P = ?";
     final String MODIFICAR_PRODUCTO = "UPDATE PRODUCTO SET precio=?, descripcion=? WHERE Cod_P=?";
     final String LISTAR_PRODUCTO = "SELECT * FROM Producto";
+    final String MEDIA_Y_MAS_CARO = "CALL MEDIA_Y_MAS_CARO()";
     
 
     private void openConnection() {
@@ -280,6 +282,33 @@ public class DaoImplementacionMySql implements Dao {
 	    }
 
 	    return map;
+	}
+	
+	@Override
+	public ResultadoMedia mediaYMasCaro() {
+	    openConnection();
+	    ResultadoMedia resultado = new ResultadoMedia();
+	    ResultSet rs = null;
+	    try {
+	        stmt = con.prepareStatement("CALL MEDIA_Y_MAS_CARO()");
+	        rs = stmt.executeQuery();
+	        if (rs.next()) {
+	            resultado.setMedia(rs.getFloat("MEDIA"));
+	            resultado.setProductoMasCaro(rs.getString("PRODUCTO_MAS_CARO"));
+	            resultado.setPrecioMaximo(rs.getFloat("PRECIO_MAXIMO"));
+	            resultado.setClasificacion(rs.getString("CLASIFICACION"));
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    } finally {
+	        try {
+	            if (rs != null) rs.close();
+	            closeConnection();
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+	    }
+	    return resultado;
 	}
 	
    
