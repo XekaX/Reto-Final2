@@ -49,7 +49,7 @@ public class Principal {
 	}
 	
     public static Map<Integer, Producto> listarProductos() {
-		return dao.listarProductos();
+		return dao.listarProductos();   
 	}
     
     public static ResultadoMedia mediaYMasCaro() {
