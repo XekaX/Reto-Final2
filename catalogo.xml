@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<catalogo>
+    <producto id="3">
+        <nombre>sqdfv</nombre>
+        <tipo>CARTAS</tipo>
+        <precio>34.0</precio>
+    </producto>
+    <producto id="101">
+        <nombre>Carta Pokémon Pikachu</nombre>
+        <tipo>CARTAS</tipo>
+        <precio>5.99</precio>
+    </producto>
+    <producto id="102">
+        <nombre>Carta Magic Fireball</nombre>
+        <tipo>CARTAS</tipo>
+        <precio>7.5</precio>
+    </producto>
+    <producto id="105">
+        <nombre>Eka</nombre>
+        <tipo>CARTAS</tipo>
+        <precio>10.99</precio>
+    </producto>
+    <producto id="201">
+        <nombre>Comic Spiderman #1</nombre>
+        <tipo>COMICS</tipo>
+        <precio>12.99</precio>
+    </producto>
+    <producto id="202">
+        <nombre>Comic Batman vs Superman</nombre>
+        <tipo>COMICS</tipo>
+        <precio>12.99</precio>
+    </producto>
+</catalogo>
