@@ -1,38 +1,132 @@
-Proyecto: Reto-Final
+# 📦 Proyecto: Reto-Final
 
-Descripción:
+## 📖 Descripción
 
-Tecnologías utilizadas
+Este proyecto es una aplicación desarrollada en Java que simula la gestión de una tienda (Frikilandia), permitiendo la administración de usuarios, trabajadores, productos y compras mediante una arquitectura MVC con acceso a base de datos MySQL.
 
-Dependencias
+Incluye funcionalidades como:
+- Login de usuarios (clientes y trabajadores)
+- Gestión de trabajadores (CRUD)
+- Conexión a base de datos MySQL
+- Interfaz gráfica con Swing
+- Pruebas unitarias
+
+---
+
+## 🛠️ Tecnologías utilizadas
+
+- Java SE
+- Swing (Interfaz gráfica)
+- MySQL
+- JDBC
+- JUnit (tests unitarios)
+- Mockito (simulación en pruebas)
+
+---
+
+## 📦 Dependencias
 
 Este proyecto utiliza las siguientes librerías externas:
 
-Base de datos El proyecto incluye el script de base de datos:
-▶️ Cómo usarlo
-1. Crear una base de datos en MySQL
-2. Importar el fichero bd.sql
+- MySQL Connector/J (JDBC)
+- JUnit 4
+- Mockito
 
-b. O usando una herramienta gráfica como MySQL Workbench
+---
 
-Instalación 📥 
-Clonar el repositorio git clone https://github.com/usuario/repositorio.git
+## 🗄️ Base de datos
 
-📁 Importar el proyecto · 
-Abrir el proyecto en tu IDE (Eclipse/ IntelliJ / VS Code)
+El proyecto incluye el script de base de datos:
 
-➕ Añadir dependencias manualmente 
+📄 `Frikilandia.sql`
+
+---
+
+## ▶️ Cómo usar la base de datos
+
+1. Crear una base de datos en MySQL:
+
+```sql
+CREATE DATABASE Frikilandia;
+```
+
+2. Importar el fichero `bd.sql` en la base de datos creada.
+
+### 🧰 Alternativa
+También puedes usar una herramienta gráfica como:
+- MySQL Workbench
+- phpMyAdmin
+
+---
+
+## 📥 Instalación
+
+Clonar el repositorio:
+
+```bash
+git clone https://github.com/XekaX/Reto-Final2.git
+```
+
+---
+
+## 📁 Importar el proyecto
+
+Abrir el proyecto en tu IDE:
+
+- Eclipse
+- IntelliJ IDEA
+- Visual Studio Code
+
+---
+
+## ➕ Añadir dependencias manualmente
+
 1. Descargar:
-a. Conector JDBC de MySQL
-b. Librerías de Mockito
-2. Añadir los .jar al proyecto (ver sección anterior)
+   - MySQL Connector/J
+   - Librerías de Mockito
+   - JUnit 4
 
-Ejecución 
-1. Configurar la conexión a la base de datos en el proyecto
-2. Ejecutar la aplicación desde el main
+2. Añadir los archivos `.jar` al proyecto:
+   - Click derecho en el proyecto → Build Path → Add External JARs
 
-Tests 
-El proyecto incluye pruebas unitarias usando Mockito. 
-Para ejecutarlas: 
-Desde el IDE → Ejecutar tests 
-Asegúrate de que los JAR de Mockito están correctamente añadidos
+---
+
+## ⚙️ Ejecución
+
+1. Configurar la conexión a la base de datos en el proyecto:
+   - Usuario MySQL
+   - Contraseña
+   - URL de conexión
+
+2. Ejecutar la aplicación desde la clase `Main`.
+
+---
+
+## 🧪 Tests
+
+El proyecto incluye pruebas unitarias utilizando JUnit y Mockito.
+
+### ▶️ Ejecución de tests:
+
+- Click derecho en la carpeta `test`
+- Run As → JUnit Test
+
+### ⚠️ Importante:
+Asegúrate de tener añadidos los `.jar` de:
+- JUnit
+- Mockito
+
+---
+
+## 👨‍💻 Autor
+
+Proyecto desarrollado como parte de un reto final de programación en Java.
+
+---
+
+## 📌 Notas
+
+- Arquitectura MVC
+- Separación de capas: Vista, Controlador, Modelo y DAO
+- Base de datos MySQL
+```
