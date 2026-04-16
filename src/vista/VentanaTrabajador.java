@@ -1,5 +1,8 @@
 package vista;
 
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Image;
 import java.awt.event.*;
 import java.util.Map;
 import javax.swing.*;
@@ -25,11 +28,16 @@ public class VentanaTrabajador extends JDialog implements ActionListener {
 
 	private static final long serialVersionUID = 1L;
 
-	private Map<Integer, Categoria> map;// Map de categorías obtenidas de la base de datos
-	private JTextField textDescripcion;// Campos de texto para introducir datos
+	private Map<Integer, Categoria> map; // Map de categorías obtenidas de la base de datos
+
+	// Campos de texto para introducir datos
+	private JTextField textDescripcion;
 	private JTextField textPrecio;
 	private JTextField textCod;
-	private JComboBox<Categoria> cmbCategoria;// ComboBox para seleccionar la categoría
+
+	// ComboBox para seleccionar la categoría
+	private JComboBox<Categoria> cmbCategoria;
+
 	private JButton btnAñadir;
 	private JButton btnModificar;
 	private JButton btnEliminar;
@@ -40,9 +48,11 @@ public class VentanaTrabajador extends JDialog implements ActionListener {
 	 */
 	public VentanaTrabajador() {
 		setTitle("Gestión de Productos");
-		setSize(299, 324);
+		setSize(361, 324);
 		setLocationRelativeTo(null);
 		getContentPane().setLayout(null);
+		
+
 
 		JLabel lblCod = new JLabel("Código:");
 		lblCod.setBounds(26, 29, 70, 24);
@@ -86,23 +96,31 @@ public class VentanaTrabajador extends JDialog implements ActionListener {
 		}
 
 		btnAñadir = new JButton("Añadir");
-		btnAñadir.setBounds(10, 212, 120, 30);
+		btnAñadir.setBounds(37, 212, 120, 30);
+		btnAñadir.setIcon(escalarIcono("/resources/añadirProducto.png"));
 		btnAñadir.addActionListener(this);
+		estiloBoton(btnAñadir);
 		getContentPane().add(btnAñadir);
 
 		btnModificar = new JButton("Modificar");
-		btnModificar.setBounds(135, 212, 120, 30);
+		btnModificar.setBounds(197, 213, 120, 30);
+		btnModificar.setIcon(escalarIcono("/resources/modificar.jpg"));
 		btnModificar.addActionListener(this);
+		estiloBoton(btnModificar);
 		getContentPane().add(btnModificar);
 
 		btnEliminar = new JButton("Eliminar");
-		btnEliminar.setBounds(10, 252, 120, 30);
+		btnEliminar.setBounds(37, 253, 120, 30);
+		btnEliminar.setIcon(escalarIcono("/resources/eliminar.png"));
 		btnEliminar.addActionListener(this);
+		estiloBoton(btnEliminar);
 		getContentPane().add(btnEliminar);
 
 		btnVisualizar = new JButton("Visualizar");
-		btnVisualizar.setBounds(135, 252, 120, 30);
+		btnVisualizar.setBounds(197, 254, 120, 30);
+		btnVisualizar.setIcon(escalarIcono("/resources/visualizar.png"));
 		btnVisualizar.addActionListener(this);
+		estiloBoton(btnVisualizar);
 		getContentPane().add(btnVisualizar);
 	}
 
@@ -137,6 +155,7 @@ public class VentanaTrabajador extends JDialog implements ActionListener {
 			if (!textoCod.matches("\\d+")) {
 				throw new CodigoException("Debes introducir un código numérico");
 			}
+
 			// Asignar valores al producto
 			p.setCodP(Integer.parseInt(textoCod));
 			p.setPrecio(Float.parseFloat(textPrecio.getText()));
@@ -151,7 +170,7 @@ public class VentanaTrabajador extends JDialog implements ActionListener {
 			else if (cat.getNombre().equalsIgnoreCase("Comics"))
 				p.setTipo(TipoProducto.COMICS);
 
-			// Llamar a la lógica para guardar product	o
+			// Llamar a la lógica para guardar producto
 			boolean ok = Principal.altaProducto(p);
 
 			// Mostrar resultado
@@ -188,5 +207,33 @@ public class VentanaTrabajador extends JDialog implements ActionListener {
 		} else {
 			JOptionPane.showMessageDialog(this, "Error al eliminar");
 		}
+	}
+
+	/**
+	 * Estilo uniforme para los botones de la ventana.
+	 */
+	private void estiloBoton(JButton btn) {
+		btn.setBackground(new Color(30, 144, 255));
+		btn.setForeground(Color.WHITE);
+		btn.setFocusPainted(false);
+		btn.setBorderPainted(false);
+		btn.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+		btn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+
+		btn.setHorizontalTextPosition(SwingConstants.RIGHT);
+		btn.setVerticalTextPosition(SwingConstants.CENTER);
+		btn.setIconTextGap(8);
+	}
+
+	/**
+	 * Escala un icono para que no ocupe todo el botón.
+	 * 
+	 * @param ruta ruta del recurso dentro del proyecto
+	 * @return ImageIcon escalado
+	 */
+	private ImageIcon escalarIcono(String ruta) {
+		ImageIcon icono = new ImageIcon(getClass().getResource(ruta));
+		Image imagen = icono.getImage().getScaledInstance(18, 18, Image.SCALE_SMOOTH);
+		return new ImageIcon(imagen);
 	}
 }

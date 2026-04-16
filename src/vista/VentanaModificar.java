@@ -60,41 +60,48 @@ public class VentanaModificar extends JDialog implements ActionListener {
 		setTitle("Modificar Producto");
 		setSize(400, 300);
 		setLocationRelativeTo(null);
+
 		getContentPane().setLayout(null);
+
+		// ⚪ FONDO BLANCO
+		getContentPane().setBackground(Color.WHITE);
 
 		// Etiqueta Código
 		JLabel lblCod = new JLabel("Código:");
 		lblCod.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		lblCod.setForeground(Color.BLACK);
 		lblCod.setBounds(26, 29, 70, 24);
 		getContentPane().add(lblCod);
 
 		// Campo Código
 		textCod = new JTextField();
-		textCod.setBounds(120, 34, 97, 19);
+		textCod.setBounds(140, 34, 150, 19);
 		textCod.setColumns(10);
 		getContentPane().add(textCod);
 
 		// Etiqueta Precio
 		JLabel lblPrecio = new JLabel("Precio:");
 		lblPrecio.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		lblPrecio.setForeground(Color.BLACK);
 		lblPrecio.setBounds(26, 80, 64, 13);
 		getContentPane().add(lblPrecio);
 
 		// Campo Precio
 		textPrecio = new JTextField();
-		textPrecio.setBounds(120, 79, 97, 19);
+		textPrecio.setBounds(140, 79, 150, 19);
 		textPrecio.setColumns(10);
 		getContentPane().add(textPrecio);
 
 		// Etiqueta Descripción
 		JLabel lblDesc = new JLabel("Descripción:");
 		lblDesc.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		lblDesc.setForeground(Color.BLACK);
 		lblDesc.setBounds(26, 121, 97, 13);
 		getContentPane().add(lblDesc);
 
 		// Campo Descripción (no editable porque no se modifica aquí)
 		textDescripcion = new JTextField();
-		textDescripcion.setBounds(120, 120, 96, 19);
+		textDescripcion.setBounds(140, 120, 150, 19);
 		textDescripcion.setColumns(10);
 		textDescripcion.setEditable(false);
 		getContentPane().add(textDescripcion);
@@ -102,13 +109,14 @@ public class VentanaModificar extends JDialog implements ActionListener {
 		// Etiqueta Categoría
 		JLabel lblCat = new JLabel("Categoría:");
 		lblCat.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		lblCat.setForeground(Color.BLACK);
 		lblCat.setBounds(26, 164, 70, 13);
 		getContentPane().add(lblCat);
 
 		// ComboBox de categorías (deshabilitado)
 		cmbCategoria = new JComboBox<>();
 		cmbCategoria.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		cmbCategoria.setBounds(120, 162, 97, 21);
+		cmbCategoria.setBounds(140, 162, 150, 21);
 		cmbCategoria.setEnabled(false);
 		getContentPane().add(cmbCategoria);
 
@@ -122,14 +130,16 @@ public class VentanaModificar extends JDialog implements ActionListener {
 
 		// BOTÓN GUARDAR
 		btnGuardar = new JButton("Guardar");
-		btnGuardar.setBounds(105, 222, 85, 21);
-		btnGuardar.addActionListener(this); // Asociar evento
+		btnGuardar.setBounds(90, 220, 100, 30);
+		btnGuardar.addActionListener(this);
+		estiloBoton(btnGuardar);
 		getContentPane().add(btnGuardar);
 
 		// BOTÓN CANCELAR
 		btnCancelar = new JButton("Cancelar");
-		btnCancelar.setBounds(200, 222, 85, 21);
-		btnCancelar.addActionListener(this); // Asociar evento
+		btnCancelar.setBounds(210, 220, 100, 30);
+		btnCancelar.addActionListener(this);
+		estiloBoton(btnCancelar);
 		getContentPane().add(btnCancelar);
 	}
 
@@ -151,6 +161,18 @@ public class VentanaModificar extends JDialog implements ActionListener {
 	}
 
 	/**
+	 * Estilo uniforme para los botones de la ventana.
+	 */
+	private void estiloBoton(JButton btn) {
+		btn.setBackground(new Color(30, 144, 255)); // azul
+		btn.setForeground(Color.WHITE);
+		btn.setFocusPainted(false);
+		btn.setBorderPainted(false);
+		btn.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+		btn.setCursor(new Cursor(Cursor.HAND_CURSOR));
+	}
+
+	/**
 	 * Realiza la modificación de un producto.
 	 * 
 	 * <Incluye las siguientes validaciones:
@@ -159,7 +181,6 @@ public class VentanaModificar extends JDialog implements ActionListener {
 	 *   Código numérico
 	 *   Precio con formato válido
 	 *   Existencia del producto
-	 * 
 	 * 
 	 * Si todas las validaciones son correctas, se actualiza el producto
 	 * mediante la capa de negocio.

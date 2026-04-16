@@ -41,8 +41,8 @@ public class DaoImplementacionMySql implements Dao {
 	private void openConnection() {
 		try {
 			con = DriverManager.getConnection(
-					"jdbc:mysql://localhost:3306/Frikilandia?serverTimezone=Europe/Madrid&useSSL=false", "root", "");
-		} catch (SQLException e) {
+					"jdbc:mysql://localhost:3306/frikilandia?serverTimezone=Europe/Madrid&useSSL=false", "root", "abcd*1234");
+		}catch (SQLException e) {
 			System.out.println("Error al intentar abrir la BD");
 		}
 	}
