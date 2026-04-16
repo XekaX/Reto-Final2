@@ -121,6 +121,10 @@ Asegúrate de tener añadidos los `.jar` de:
 ## 👨‍💻 Autor
 
 Proyecto desarrollado como parte de un reto final de programación en Java.
+- Egoitz Hernandez
+- Ekain Bedoya
+- Ander Arrizabalaga
+- Ivan Torres
 
 ---
 
