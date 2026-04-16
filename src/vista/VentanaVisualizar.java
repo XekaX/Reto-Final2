@@ -1,16 +1,8 @@
 package vista;
 
 import java.awt.BorderLayout;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-
-import javax.swing.JDialog;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
+import java.util.*;
+import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
 import modelo.Producto;
@@ -18,107 +10,100 @@ import principal.Principal;
 import util.ExportadorProductosXML;
 import modelo.ResultadoMedia;
 
-import javax.swing.JButton;
-import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
 
+/**
+ * Ventana que muestra los productos en una tabla. Permite exportar a XML y ver
+ * estadísticas.
+ * 
+ * Funcionalidades: - Visualizar todos los productos - Exportar productos a XML
+ * - Mostrar estadísticas (media y producto más caro)
+ * 
+ * @author Ekain
+ */
 public class VentanaVisualizar extends JDialog implements ActionListener {
 
 	private static final long serialVersionUID = 1L;
-	private final JPanel contentPanel = new JPanel();
-	private JTable tablaProductos;
-	private JScrollPane jscroll;
-	private JButton btnXML;
-	private JButton btnMedia;
+	private final JPanel contentPanel = new JPanel();// Panel principal donde se añaden los componentes
+	private JTable tablaProductos;// Tabla para mostrar productos
+	private JButton btnXML, btnMedia;// Botones de acciones
 
-	public static void main(String[] args) {
-		try {
-			VentanaVisualizar dialog = new VentanaVisualizar();
-			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-			dialog.setVisible(true);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
+	/**
+	 * Constructor que inicializa la ventana.
+	 */
 	public VentanaVisualizar() {
 		setBounds(100, 100, 551, 339);
 		getContentPane().setLayout(new BorderLayout());
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
-		presentarTablaProductos();
+		presentarTablaProductos();// Llamada para construir la interfaz
 	}
 
+	/**
+	 * Carga los productos en una tabla.
+	 * 
+	 * @return JTable con productos
+	 */
 	private JTable cargarTablaProductos() {
-		String[] columnasNombre = { "Cod_P", "Precio", "Descripcion", "Tipo" };
-		Map<Integer, Producto> productosMap = Principal.listarProductos();
+		String[] columnas = { "Cod_P", "Precio", "Descripcion", "Tipo" };// Nombres de las columnas
+		DefaultTableModel model = new DefaultTableModel(null, columnas);// Modelo de la tabla
 
-		DefaultTableModel model = new DefaultTableModel(null, columnasNombre);
-
-		for (Entry<Integer, Producto> entry : productosMap.entrySet()) {
-			Producto produc = entry.getValue();
-			if (produc != null) {
-				String[] fila = new String[4];
-				fila[0] = String.valueOf(produc.getCodP());
-				fila[1] = String.valueOf(produc.getPrecio());
-				fila[2] = produc.getDescripcion();
-				fila[3] = produc.getTipo().name();
-				model.addRow(fila);
-			}
+		for (Producto p : Principal.listarProductos().values()) {
+			model.addRow(new Object[] { p.getCodP(), // Código del producto
+					p.getPrecio(), // Precio
+					p.getDescripcion(), // Descripción
+					p.getTipo() // Tipo (ENUM)
+			});
 		}
-
 		return new JTable(model);
 	}
 
+	/**
+	 * Método que construye la interfaz gráfica: - Añade la tabla dentro de un
+	 * JScrollPane - Añade los botones de acciones
+	 */
 	private void presentarTablaProductos() {
 		contentPanel.setLayout(null);
 
-		tablaProductos = this.cargarTablaProductos();
-		jscroll = new JScrollPane(tablaProductos);
-		jscroll.setBounds(0, 0, 539, 215);
-
-		contentPanel.add(jscroll);
+		tablaProductos = cargarTablaProductos();
+		JScrollPane scroll = new JScrollPane(tablaProductos);
+		scroll.setBounds(0, 0, 539, 215);
+		contentPanel.add(scroll);
 
 		btnXML = new JButton("Crear XML");
-		btnXML.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		btnXML.setBounds(201, 231, 105, 39);
 		btnXML.addActionListener(this);
 		contentPanel.add(btnXML);
 
-		// En el constructor, junto al btnXML:
 		btnMedia = new JButton("Ver Media");
-		btnMedia.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		btnMedia.setBounds(10, 231, 105, 39);
 		btnMedia.addActionListener(this);
 		contentPanel.add(btnMedia);
 	}
 
+	/**
+	 * Método que gestiona los eventos de los botones.
+	 * 
+	 * @param e Evento generado por los botones
+	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		// BOTÓN CREAR XML
 		if (e.getSource().equals(btnXML)) {
 
-			String ruta = "src/xml/catalogo.xml";
+			String ruta = "src/xml/catalogo.xml";// Ruta donde se guardará el archivo
+			new java.io.File("src/xml").mkdirs();// Crear carpeta si no existe
 
-			// Crear la carpeta si no existe
-			new java.io.File("src/xml").mkdirs();
+			List<Producto> lista = new ArrayList<>(Principal.listarProductos().values());// Obtener lista de productos
+			new ExportadorProductosXML().exportarProductos(lista, ruta);// Crear exportador XML y exporta el XML
 
-			// Generar XML
-			List<Producto> listaProductos = new ArrayList<>(Principal.listarProductos().values());
-			ExportadorProductosXML exportador = new ExportadorProductosXML();
-			exportador.exportarProductos(listaProductos, ruta);
-
-			JOptionPane.showMessageDialog(this, "XML guardado en: " + ruta, "Éxito", JOptionPane.INFORMATION_MESSAGE);
+			JOptionPane.showMessageDialog(this, "XML guardado en: " + ruta);// Mensaje de confirmación
 
 		} else if (e.getSource().equals(btnMedia)) {
-			ResultadoMedia media = Principal.mediaYMasCaro();
-		    JOptionPane.showMessageDialog(this,
-		        "Precio medio: " + media.getMedia() + "€\n" +
-		        "Producto más caro: " + media.getProductoMasCaro() + "\n" +
-		        "Precio máximo: " + media.getPrecioMaximo() + "€\n" +
-		        "Clasificación: " + media.getClasificacion(),
-		        "Estadísticas productos",
-		        JOptionPane.INFORMATION_MESSAGE);
-		}
 
+			ResultadoMedia m = Principal.mediaYMasCaro();
+
+			JOptionPane.showMessageDialog(this, "Media: " + m.getMedia() + "\nMás caro: " + m.getProductoMasCaro()
+					+ "\nPrecio máximo: " + m.getPrecioMaximo() + "\nClasificación: " + m.getClasificacion());
+		}
 	}
 }

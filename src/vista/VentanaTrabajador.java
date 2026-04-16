@@ -1,8 +1,6 @@
 package vista;
 
-import java.awt.Image;
 import java.awt.event.*;
-import java.net.URL;
 import java.util.Map;
 import javax.swing.*;
 
@@ -14,20 +12,32 @@ import modelo.Producto;
 import modelo.TipoProducto;
 import principal.Principal;
 
+/**
+ * Ventana principal para la gestión de productos. Permite añadir, modificar,
+ * eliminar y visualizar productos.
+ * 
+ * Se conecta con la capa DAO para obtener categorías y con la clase Principal
+ * para realizar operaciones CRUD sobre los productos.
+ * 
+ * @author Ekain
+ */
 public class VentanaTrabajador extends JDialog implements ActionListener {
 
 	private static final long serialVersionUID = 1L;
 
-	private Map<Integer, Categoria> map;
-	private JTextField textDescripcion;
+	private Map<Integer, Categoria> map;// Map de categorías obtenidas de la base de datos
+	private JTextField textDescripcion;// Campos de texto para introducir datos
 	private JTextField textPrecio;
 	private JTextField textCod;
-	private JComboBox<Categoria> cmbCategoria;
+	private JComboBox<Categoria> cmbCategoria;// ComboBox para seleccionar la categoría
 	private JButton btnAñadir;
 	private JButton btnModificar;
 	private JButton btnEliminar;
 	private JButton btnVisualizar;
 
+	/**
+	 * Constructor que inicializa la interfaz gráfica y carga las categorías.
+	 */
 	public VentanaTrabajador() {
 		setTitle("Gestión de Productos");
 		setSize(299, 324);
@@ -66,64 +76,41 @@ public class VentanaTrabajador extends JDialog implements ActionListener {
 		cmbCategoria.setBounds(120, 162, 97, 21);
 		getContentPane().add(cmbCategoria);
 
+		// Crear DAO y obtener categorías de la base de datos
 		Dao dao = new DaoImplementacionMySql();
 		map = dao.listarCategoria();
 
+		// Añado las categorias al comboBox
 		for (Categoria c : map.values()) {
 			cmbCategoria.addItem(c);
 		}
 
-		
-		ImageIcon icono = null;
-		URL url = getClass().getResource("/resources/añadirProducto.png");
-
-		Image img = new ImageIcon(url).getImage();
-		Image imgEscalada = img.getScaledInstance(20, 20, Image.SCALE_SMOOTH);
-		icono = new ImageIcon(imgEscalada);
-
-		btnAñadir = new JButton("Añadir", icono);
+		btnAñadir = new JButton("Añadir");
 		btnAñadir.setBounds(10, 212, 120, 30);
 		btnAñadir.addActionListener(this);
-		btnAñadir.setFocusPainted(false);
 		getContentPane().add(btnAñadir);
-		
-		ImageIcon iconoModificar = null;
-		URL urlModificar = getClass().getResource("/resources/modificar.jpg");
-		
-		Image imgM = new ImageIcon(urlModificar).getImage();
-	    Image imgMEscalada = imgM.getScaledInstance(20, 20, Image.SCALE_SMOOTH);
-	    iconoModificar = new ImageIcon(imgMEscalada);
 
-		btnModificar = new JButton("Modificar", iconoModificar);
+		btnModificar = new JButton("Modificar");
 		btnModificar.setBounds(135, 212, 120, 30);
 		btnModificar.addActionListener(this);
 		getContentPane().add(btnModificar);
-		
-		ImageIcon iconoEliminar = null;
-		URL urlEliminar = getClass().getResource("/resources/eliminar.png");
-		
-		Image imgE = new ImageIcon(urlEliminar).getImage();
-	    Image imgEEscalada = imgE.getScaledInstance(20, 20, Image.SCALE_SMOOTH);
-	    iconoEliminar = new ImageIcon(imgEEscalada);
 
-		btnEliminar = new JButton("Eliminar", iconoEliminar);
+		btnEliminar = new JButton("Eliminar");
 		btnEliminar.setBounds(10, 252, 120, 30);
 		btnEliminar.addActionListener(this);
 		getContentPane().add(btnEliminar);
-		
-		ImageIcon iconoVisualizar = null;
-		URL urlVisualizar = getClass().getResource("/resources/visualizar.png");
-		
-		Image imgV = new ImageIcon(urlVisualizar).getImage();
-	    Image imgVEscalada = imgV.getScaledInstance(20, 20, Image.SCALE_SMOOTH);
-	    iconoVisualizar = new ImageIcon(imgVEscalada);
 
-		btnVisualizar = new JButton("Visualizar", iconoVisualizar);
+		btnVisualizar = new JButton("Visualizar");
 		btnVisualizar.setBounds(135, 252, 120, 30);
 		btnVisualizar.addActionListener(this);
 		getContentPane().add(btnVisualizar);
 	}
 
+	/**
+	 * Gestiona los eventos de los botones.
+	 * 
+	 * @param e Evento de acción
+	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource().equals(btnAñadir)) {
@@ -131,14 +118,18 @@ public class VentanaTrabajador extends JDialog implements ActionListener {
 		} else if (e.getSource().equals(btnEliminar)) {
 			eliminar();
 		} else if (e.getSource().equals(btnModificar)) {
-			VentanaModificar m = new VentanaModificar();
-			m.setVisible(true);
+			new VentanaModificar().setVisible(true);
 		} else if (e.getSource().equals(btnVisualizar)) {
-			VentanaVisualizar v = new VentanaVisualizar();
-			v.setVisible(true);
+			new VentanaVisualizar().setVisible(true);
 		}
 	}
 
+	/**
+	 * Da de alta un nuevo producto.
+	 * 
+	 * Valida que el código sea numérico y el precio correcto. Muestra mensajes de
+	 * error o éxito.
+	 */
 	private void alta() {
 		Producto p = new Producto();
 		try {
@@ -146,11 +137,12 @@ public class VentanaTrabajador extends JDialog implements ActionListener {
 			if (!textoCod.matches("\\d+")) {
 				throw new CodigoException("Debes introducir un código numérico");
 			}
-
+			// Asignar valores al producto
 			p.setCodP(Integer.parseInt(textoCod));
 			p.setPrecio(Float.parseFloat(textPrecio.getText()));
 			p.setDescripcion(textDescripcion.getText());
 
+			// Obtener categoría seleccionada
 			Categoria cat = (Categoria) cmbCategoria.getSelectedItem();
 			p.setIdCategoria(cat.getId_categoria());
 
@@ -159,8 +151,10 @@ public class VentanaTrabajador extends JDialog implements ActionListener {
 			else if (cat.getNombre().equalsIgnoreCase("Comics"))
 				p.setTipo(TipoProducto.COMICS);
 
+			// Llamar a la lógica para guardar product	o
 			boolean ok = Principal.altaProducto(p);
 
+			// Mostrar resultado
 			if (ok)
 				JOptionPane.showMessageDialog(this, "Producto añadido: " + p.getDescripcion());
 			else
@@ -173,6 +167,9 @@ public class VentanaTrabajador extends JDialog implements ActionListener {
 		}
 	}
 
+	/**
+	 * Elimina un producto por su código.
+	 */
 	private void eliminar() {
 		int cod = Integer.parseInt(textCod.getText());
 
@@ -185,10 +182,9 @@ public class VentanaTrabajador extends JDialog implements ActionListener {
 		p.setCodP(cod);
 
 		boolean ok = Principal.eliminarProducto(p);
-
 		if (ok) {
 			JOptionPane.showMessageDialog(this, "Producto eliminado");
-			dispose();
+			dispose(); // Cerrar ventana
 		} else {
 			JOptionPane.showMessageDialog(this, "Error al eliminar");
 		}
